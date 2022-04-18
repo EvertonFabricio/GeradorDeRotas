@@ -3,9 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeradorDeRotas", "GeradorDeRotas\GeradorDeRotas.csproj", "{67C4D4C8-716D-441C-A2D3-B4782FFA579D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LerArquivoExcel", "LerArquivoExcel\LerArquivoExcel.csproj", "{84DBE512-25BE-4DA9-8A6A-683714782309}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LerArquivoExcel", "LerArquivoExcel\LerArquivoExcel.csproj", "{84DBE512-25BE-4DA9-8A6A-683714782309}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API_Cidade", "Cadastros\API_Cidade.csproj", "{2BA167EE-D5C5-4397-9FFC-441AE2590FB7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{B32E748D-331C-476D-A593-743484CEB66A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Servicos", "Servicos\Servicos.csproj", "{7CACE85A-7293-4EF3-ACE9-FDF2228B48AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API_Pessoa", "API_Pessoa\API_Pessoa.csproj", "{4251050D-5416-4B70-927F-34711FBC0177}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API_Equipe", "API_Equipe\API_Equipe.csproj", "{901B95FB-5C0B-435A-9433-5ADB4B314545}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +21,30 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{67C4D4C8-716D-441C-A2D3-B4782FFA579D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67C4D4C8-716D-441C-A2D3-B4782FFA579D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67C4D4C8-716D-441C-A2D3-B4782FFA579D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67C4D4C8-716D-441C-A2D3-B4782FFA579D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{84DBE512-25BE-4DA9-8A6A-683714782309}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{84DBE512-25BE-4DA9-8A6A-683714782309}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84DBE512-25BE-4DA9-8A6A-683714782309}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84DBE512-25BE-4DA9-8A6A-683714782309}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BA167EE-D5C5-4397-9FFC-441AE2590FB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BA167EE-D5C5-4397-9FFC-441AE2590FB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BA167EE-D5C5-4397-9FFC-441AE2590FB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BA167EE-D5C5-4397-9FFC-441AE2590FB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B32E748D-331C-476D-A593-743484CEB66A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B32E748D-331C-476D-A593-743484CEB66A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B32E748D-331C-476D-A593-743484CEB66A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B32E748D-331C-476D-A593-743484CEB66A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CACE85A-7293-4EF3-ACE9-FDF2228B48AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CACE85A-7293-4EF3-ACE9-FDF2228B48AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CACE85A-7293-4EF3-ACE9-FDF2228B48AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CACE85A-7293-4EF3-ACE9-FDF2228B48AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4251050D-5416-4B70-927F-34711FBC0177}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4251050D-5416-4B70-927F-34711FBC0177}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4251050D-5416-4B70-927F-34711FBC0177}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4251050D-5416-4B70-927F-34711FBC0177}.Release|Any CPU.Build.0 = Release|Any CPU
+		{901B95FB-5C0B-435A-9433-5ADB4B314545}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{901B95FB-5C0B-435A-9433-5ADB4B314545}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{901B95FB-5C0B-435A-9433-5ADB4B314545}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{901B95FB-5C0B-435A-9433-5ADB4B314545}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

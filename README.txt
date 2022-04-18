@@ -1,3 +1,0 @@
-15-04-2022 > Criado o MVC com funções para cadastrar Pessoa, Equipe e Cidade. Banco de dados criado com o nome "GeradorDeRotas", em SQLServer. Para utilização em outras maquinas, alterar o 'Server' no arquivo appsettings.json para o server da propria maquina.
-Criado um consoleApp para fazer a leitura do arquivo xlsx. No mometo está programado para ler apenas o cabeçalho pra poder gerar as checkbox no MVC (ainda não sei como fazer isso). Para confirmar que está funcionando, está exportando em um arquivo docx, salvando na mesma pasta onde está o arquivo em Excel. (Caminho:  [...]GeradorDeRotas\GeradorDeRotas\bin\Debug\net5.0\DataBase).
-

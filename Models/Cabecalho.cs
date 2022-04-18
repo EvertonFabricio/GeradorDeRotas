@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace GeradorDeRotas.Models
+namespace Models
 {
     public class Cabecalho
     {
@@ -43,6 +47,5 @@ namespace GeradorDeRotas.Models
         public string Obs { get; set; }
         public string ObsTecnico { get; set; }
         public string Equipamento { get; set; }
-
     }
 }

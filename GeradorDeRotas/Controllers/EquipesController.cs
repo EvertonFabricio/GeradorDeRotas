@@ -44,6 +44,7 @@ namespace GeradorDeRotas.Controllers
         }
 
         // GET: Equipes/Create
+
         public IActionResult Create()
         {
             return View();
@@ -56,6 +57,7 @@ namespace GeradorDeRotas.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Codigo")] Equipe equipe)
         {
+           
             if (ModelState.IsValid)
             {
                 _context.Add(equipe);
