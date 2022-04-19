@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OfficeOpenXml;
 
 namespace Models
@@ -14,8 +10,8 @@ namespace Models
         {
             static void Main(string[] args)
             {
-                FileInfo arquivoBase = new FileInfo(@"C:\Users\Everton Fabricio\Desktop\GeradorDeRotas\GeradorDeRotas\bin\Debug\net5.0\DataBase\Gerador.xlsx");
-                var saida = new StreamWriter(@"C:\Users\Everton Fabricio\Desktop\GeradorDeRotas\GeradorDeRotas\bin\Debug\net5.0\DataBase\Saida.docx");
+                FileInfo arquivoBase = new FileInfo(@"C:\Users\Everton Fabricio\Desktop\GeradorDeRotas 2.0\GeradorDeRotas\bin\Debug\net5.0\DataBase\Gerador.xlsx");
+                var saida = new StreamWriter(@"C:\Users\Everton Fabricio\Desktop\GeradorDeRotas\GeradorDeRotas 2.0\bin\Debug\net5.0\DataBase\Saida.docx");
 
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 

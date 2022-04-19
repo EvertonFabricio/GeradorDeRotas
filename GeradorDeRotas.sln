@@ -11,9 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Servicos", "Servicos\Servicos.csproj", "{7CACE85A-7293-4EF3-ACE9-FDF2228B48AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API_Pessoa", "API_Pessoa\API_Pessoa.csproj", "{4251050D-5416-4B70-927F-34711FBC0177}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API_Pessoa", "API_Pessoa\API_Pessoa.csproj", "{4251050D-5416-4B70-927F-34711FBC0177}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API_Equipe", "API_Equipe\API_Equipe.csproj", "{901B95FB-5C0B-435A-9433-5ADB4B314545}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API_Equipe", "API_Equipe\API_Equipe.csproj", "{901B95FB-5C0B-435A-9433-5ADB4B314545}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API_Usuario", "API_Usuario\API_Usuario.csproj", "{BB4051FD-8A0E-4C42-8564-4A0BFD8DAEB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeradorDeRotas_MVC", "GeradorDeRotas_MVC\GeradorDeRotas_MVC.csproj", "{3780301E-1FCC-44AA-9172-293BC55E36DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{901B95FB-5C0B-435A-9433-5ADB4B314545}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{901B95FB-5C0B-435A-9433-5ADB4B314545}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{901B95FB-5C0B-435A-9433-5ADB4B314545}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB4051FD-8A0E-4C42-8564-4A0BFD8DAEB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB4051FD-8A0E-4C42-8564-4A0BFD8DAEB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB4051FD-8A0E-4C42-8564-4A0BFD8DAEB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB4051FD-8A0E-4C42-8564-4A0BFD8DAEB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3780301E-1FCC-44AA-9172-293BC55E36DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3780301E-1FCC-44AA-9172-293BC55E36DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3780301E-1FCC-44AA-9172-293BC55E36DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3780301E-1FCC-44AA-9172-293BC55E36DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
