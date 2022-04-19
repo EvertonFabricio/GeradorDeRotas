@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using API_Equipe.Util;
+using Models;
 using MongoDB.Driver;
 using Servicos;
 
@@ -28,13 +29,21 @@ namespace API_Equipe.Servicos
 
         public async Task<Models.Equipe> CreateAsync(Models.Equipe equipe)
         {
-            var retornoPessoa = await BuscaPessoa.GetPessoa(equipe.Pessoa.Nome);
+            var retornoPessoa = new List<Pessoa>();
+
+            foreach (var item in equipe.Pessoa)
+            {
+                Pessoa pessoa = await BuscaPessoa.GetPessoa(item.Nome);
+                retornoPessoa.Add(pessoa);
+            }
+
+
             var retornoCidade = await BuscaCidade.GetCidade(equipe.Cidade.Nome);
-            
+
             equipe.Codigo = equipe.Codigo.ToUpper();
             equipe.Pessoa = retornoPessoa;
             equipe.Cidade = retornoCidade;
-                       
+
             _equipe.InsertOne(equipe);
             return equipe;
         }

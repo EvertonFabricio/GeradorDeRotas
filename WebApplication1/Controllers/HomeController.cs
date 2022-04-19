@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using GeradorDeRotas_MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WebApplication1.Models;
 
-namespace GeradorDeRotas_MVC.Controllers
+namespace WebApplication1.Controllers
 {
     public class HomeController : Controller
     {

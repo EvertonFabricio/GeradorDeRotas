@@ -1,6 +1,6 @@
 using System;
 
-namespace GeradorDeRotas_MVC.Models
+namespace WebApplication1.Models
 {
     public class ErrorViewModel
     {
