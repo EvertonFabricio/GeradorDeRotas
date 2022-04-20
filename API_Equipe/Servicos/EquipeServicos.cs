@@ -38,7 +38,7 @@ namespace API_Equipe.Servicos
 
             foreach (var item in equipe.Pessoa)
             {
-                Pessoa pessoa = await BuscaPessoa.GetPessoa(item.Nome);
+                Pessoa pessoa = await BuscaPessoa.BuscarPessoaPeloNome(item.Nome);
                 retornoPessoa.Add(pessoa);
             }
 
@@ -62,7 +62,7 @@ namespace API_Equipe.Servicos
 
                 foreach (var item in upEquipe.Pessoa)
                 {
-                    Pessoa pessoa = await BuscaPessoa.GetPessoa(item.Nome);
+                    Pessoa pessoa = await BuscaPessoa.BuscarPessoaPeloNome(item.Nome);
                     retornoPessoa.Add(pessoa);
                 }
                 upEquipe.Pessoa = retornoPessoa;

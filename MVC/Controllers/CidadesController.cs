@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
@@ -10,27 +8,12 @@ namespace MVC.Controllers
 {
     public class CidadesController : Controller
     {
-        //    private readonly MVCContext _context;
-
-        //    public CidadesController(MVCContext context)
-        //{
-        //    _context = context;
-        //}
-
-
-
         // GET: Cidades
         public async Task<IActionResult> Index()
         {
 
-           // var retornoCidade = new List<Cidade>();
 
-            //Cidade cidade = await BuscaCidade.BuscarTodasCidades(); //fazer um serviço pra buscar todas as cidades e colocar ele aqui
-           // retornoCidade.Add(cidade);
-           // return View(retornoCidade.ToList());
-
-            //return View(await _context.Cidade.ToListAsync());  --  esse era o original
-            return View(await BuscaCidade.BuscarTodasCidades()); // esse é um possivel jeito de fazer, mas não to certo.
+            return View(await BuscaCidade.BuscarTodasCidades());
 
         }
 
@@ -64,13 +47,13 @@ namespace MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                BuscaCidade.CadastrarCidade(cidade);                                                       //criar serviço pra fazer post da cidade e colocar ele aqui
+                BuscaCidade.CadastrarCidade(cidade);
                 return RedirectToAction(nameof(Index));
             }
             return View(cidade);
         }
 
-       // GET: Cidades/Edit/5
+        // GET: Cidades/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -78,7 +61,7 @@ namespace MVC.Controllers
                 return NotFound();
             }
 
-            var cidade = await BuscaCidade.BuscarCidadePeloId(id);                                    //criar serviço pra buscar a cidade pelo id
+            var cidade = await BuscaCidade.BuscarCidadePeloId(id);
             if (cidade == null)
             {
                 return NotFound();
@@ -88,7 +71,7 @@ namespace MVC.Controllers
 
 
 
-       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("Id,Nome")] Cidade cidade)
@@ -102,20 +85,14 @@ namespace MVC.Controllers
             {
                 try
                 {
-                    var retornoCidade = await BuscaCidade.BuscarCidadePeloId(id);             //mesmo servico que criei pra função de cima
-                    BuscaCidade.UpdateCidade(id, cidade);                           //criar serviço de update pra cidade
+                    var retornoCidade = await BuscaCidade.BuscarCidadePeloId(id);
+                    BuscaCidade.UpdateCidade(id, cidade);
 
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    //if (!CidadeExists(cidade.Id))
-                    //{
-                    //    return NotFound();
-                    //}
-                    //else
-                    //{
-                        throw;
-                    //}
+                    throw;
+
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -130,7 +107,7 @@ namespace MVC.Controllers
                 return NotFound();
             }
 
-            var cidade = await BuscaCidade.BuscarCidadePeloId(id);                               //mesmo serviço que usou em cima pra busca por id
+            var cidade = await BuscaCidade.BuscarCidadePeloId(id);
 
             if (cidade == null)
             {
@@ -146,13 +123,8 @@ namespace MVC.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var cidade = await BuscaCidade.BuscarCidadePeloId(id);
-            BuscaCidade.RemoverCidade(id);                                           //criar serviço pra remover cidade
+            BuscaCidade.RemoverCidade(id); 
             return RedirectToAction(nameof(Index));
         }
-
-        //private bool CidadeExists(string id)
-        //{
-        //    return _context.Cidade.Any(e => e.Id == id);
-        //}
     }
 }
