@@ -9,26 +9,31 @@ namespace API_Equipe.Servicos
 {
     public class EquipeServicos
     {
-        private readonly IMongoCollection<Models.Equipe> _equipe;
+        private readonly IMongoCollection<Equipe> _equipe;
 
         public EquipeServicos(IEquipeDatabase settings)
         {
             var equipe = new MongoClient(settings.ConnectionString);
             var database = equipe.GetDatabase(settings.DatabaseName);
-            _equipe = database.GetCollection<Models.Equipe>(settings.EquipeCollectionName);
+            _equipe = database.GetCollection<Equipe>(settings.EquipeCollectionName);
         }
 
-        public List<Models.Equipe> Get() =>
+        public List<Equipe> Get() =>
             _equipe.Find(equipe => true).ToList();
 
-        public Models.Equipe Get(string codigo) =>
+        public Equipe Get(string codigo) =>
             _equipe.Find(equipe => equipe.Codigo.ToUpper() == codigo.ToUpper()).FirstOrDefault();
+
+        public Equipe GetId(string id) =>
+           _equipe.Find(equipe => equipe.Id == id).FirstOrDefault();
 
         public Models.Equipe ChecarEquipe(string codigo) =>
             _equipe.Find(equipe => equipe.Codigo.ToUpper() == codigo.ToUpper()).FirstOrDefault();
 
-        public async Task<Models.Equipe> CreateAsync(Models.Equipe equipe)
+        public async Task<Equipe> CreateAsync(Equipe equipe)
         {
+
+
             var retornoPessoa = new List<Pessoa>();
 
             foreach (var item in equipe.Pessoa)
@@ -38,7 +43,7 @@ namespace API_Equipe.Servicos
             }
 
 
-            var retornoCidade = await BuscaCidade.GetCidade(equipe.Cidade.Nome);
+            var retornoCidade = await BuscaCidade.BuscarCidadePeloNome(equipe.Cidade.Nome);
 
             equipe.Codigo = equipe.Codigo.ToUpper();
             equipe.Pessoa = retornoPessoa;
@@ -48,8 +53,44 @@ namespace API_Equipe.Servicos
             return equipe;
         }
 
-        public void Update(string codigo, Models.Equipe upEquipe) =>
-            _equipe.ReplaceOne(equipe => equipe.Codigo.ToUpper() == codigo.ToUpper(), upEquipe);
+        public async Task<Equipe> Update(string id, Equipe upEquipe)
+        {
+
+            if (upEquipe.Pessoa != null)
+            {
+                var retornoPessoa = new List<Pessoa>();
+
+                foreach (var item in upEquipe.Pessoa)
+                {
+                    Pessoa pessoa = await BuscaPessoa.GetPessoa(item.Nome);
+                    retornoPessoa.Add(pessoa);
+                }
+                upEquipe.Pessoa = retornoPessoa;
+            }
+
+            if (upEquipe.Cidade.Nome != null)
+            {
+                var retornoCidade = await BuscaCidade.BuscarCidadePeloNome(upEquipe.Cidade.Nome);
+                upEquipe.Cidade = retornoCidade;
+            }
+
+            if (upEquipe.Codigo == null)
+            {
+                var codigo = GetId(id);
+                upEquipe.Codigo = codigo.Codigo.ToUpper();
+            }
+            if (upEquipe.Codigo != null)
+            {
+                upEquipe.Codigo = upEquipe.Codigo.ToUpper();
+            }
+            
+
+            upEquipe.Id = id;
+
+            _equipe.ReplaceOne(equipe => equipe.Id == id, upEquipe);
+
+            return upEquipe;
+        }
 
         public void Remove(string id) =>
             _equipe.DeleteOne(equipe => equipe.Id == id);

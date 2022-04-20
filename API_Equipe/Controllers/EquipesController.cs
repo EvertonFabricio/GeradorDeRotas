@@ -37,19 +37,18 @@ namespace API_Equipe.Controllers
         }
 
         [HttpPut("{id:length(24)}")]
-        public IActionResult PutEquipe(string codigo, Equipe upEquipe)
+        public async Task<IActionResult> PutEquipeAsync(string id, Equipe upEquipe)
         {
-            var equipe = _equipeServicos.Get(codigo);
+            var equipe = _equipeServicos.GetId(id);
 
             if (equipe == null)
             {
                 return NotFound();
             }
 
-            _equipeServicos.Update(codigo.ToUpper(), upEquipe);
+            await _equipeServicos.Update(id, upEquipe);
 
             return NoContent();
-
 
         }
 

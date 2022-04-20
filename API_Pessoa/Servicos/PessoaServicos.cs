@@ -33,8 +33,12 @@ namespace API_Pessoa.Servicos
             return pessoa;
         }
 
-        public void Update(string id, Models.Pessoa upPessoa) =>
+        public void Update(string id, Models.Pessoa upPessoa)
+        {
+            upPessoa.Id = id;
             _pessoa.ReplaceOne(pessoa => pessoa.Id == id, upPessoa);
+
+        }
 
         public void Remove(string id) =>
             _pessoa.DeleteOne(pessoa => pessoa.Id == id);
