@@ -55,6 +55,7 @@ namespace API_Equipe.Servicos
 
         public async Task<Equipe> Update(string id, Equipe upEquipe)
         {
+            upEquipe.Id = id;
 
             if (upEquipe.Pessoa != null)
             {
@@ -83,9 +84,8 @@ namespace API_Equipe.Servicos
             {
                 upEquipe.Codigo = upEquipe.Codigo.ToUpper();
             }
-            
 
-            upEquipe.Id = id;
+
 
             _equipe.ReplaceOne(equipe => equipe.Id == id, upEquipe);
 

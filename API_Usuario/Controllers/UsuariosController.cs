@@ -26,7 +26,7 @@ namespace API_Usuario.Controllers
         [HttpGet("{id:length(24)}", Name = "GetUsuario")]
         public ActionResult<Usuario> Get(string id)
         {
-            var usuario = _usuarioServicos.Get(id);
+            var usuario = _usuarioServicos.GetId(id);
 
             if (usuario == null)
             {
@@ -52,7 +52,7 @@ namespace API_Usuario.Controllers
         [HttpPut("{id:length(24)}")]
         public IActionResult PutUsuario(string id, Usuario upUsuario)
         {
-            var usuario = _usuarioServicos.Get(id);
+            var usuario = _usuarioServicos.GetId(id);
 
             if (usuario == null)
             {
@@ -86,7 +86,7 @@ namespace API_Usuario.Controllers
         [HttpDelete("{id:length(24)}")]
         public IActionResult DeleteUsuario(string id)
         {
-            var usuario = _usuarioServicos.Get(id);
+            var usuario = _usuarioServicos.GetId(id);
 
             if (usuario == null)
             {

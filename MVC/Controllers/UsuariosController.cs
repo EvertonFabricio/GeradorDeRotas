@@ -1,151 +1,109 @@
-﻿//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Models;
+using Servicos;
 
-//namespace MVC.Controllers
-//{
-//    public class UsuariosController : Controller
-//    {
-//        //private readonly MVCContext _context;
-
-//        //public UsuariosController(MVCContext context)
-//        //{
-//        //    _context = context;
-//        //}
+namespace MVC.Controllers
+{
+    public class UsuariosController : Controller
+    {
+        // GET: Usuarios
+        public async Task<IActionResult> Index()
+        {
 
 
+            return View(await BuscaUsuario.BuscarTodosUsuarios());
 
-//        // GET: Usuarios
-//        public async Task<IActionResult> Index()
-//        {
-//            return View(await _context.Usuario.ToListAsync());
-//        }
+        }
 
-//        // GET: Usuarios/Details/5
-//        public async Task<IActionResult> Details(string id)
-//        {
-//            if (id == null)
-//            {
-//                return NotFound();
-//            }
+        // GET: Usuarios/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
 
-//            var usuario = await _context.Usuario
-//                .FirstOrDefaultAsync(m => m.Id == id);
-//            if (usuario == null)
-//            {
-//                return NotFound();
-//            }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create([Bind("Id,NomeCompleto, NomeUsuario, Senha")] Usuario usuario)
+        {
+            if (ModelState.IsValid)
+            {
+                BuscaUsuario.CadastrarUsuario(usuario);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(usuario);
+        }
 
-//            return View(usuario);
-//        }
+        // GET: Usuarios/Edit/5
+        public async Task<IActionResult> Edit(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-//        // GET: Usuarios/Create
-//        public IActionResult Create()
-//        {
-//            return View();
-//        }
+            var usuario = await BuscaUsuario.BuscarUsuarioPeloId(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+            return View(usuario);
+        }
 
-//        // POST: Usuarios/Create
-//        // To protect from overposting attacks, enable the specific properties you want to bind to.
-//        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> Create([Bind("Id,NomeUsuario,NomeCompleto,Senha")] Usuario usuario)
-//        {
-//            if (ModelState.IsValid)
-//            {
-//                _context.Add(usuario);
-//                await _context.SaveChangesAsync();
-//                return RedirectToAction(nameof(Index));
-//            }
-//            return View(usuario);
-//        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, [Bind("Id,NomeUsuario, NomeCompleto, Senha")] Usuario usuario)
+        {
+            if (id != usuario.Id)
+            {
+                return NotFound();
+            }
 
-//        // GET: Usuarios/Edit/5
-//        public async Task<IActionResult> Edit(string id)
-//        {
-//            if (id == null)
-//            {
-//                return NotFound();
-//            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var retornoUsuario = await BuscaUsuario.BuscarUsuarioPeloId(id);
+                    BuscaUsuario.UpdateUsuario(id, usuario);
 
-//            var usuario = await _context.Usuario.FindAsync(id);
-//            if (usuario == null)
-//            {
-//                return NotFound();
-//            }
-//            return View(usuario);
-//        }
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
 
-//        // POST: Usuarios/Edit/5
-//        // To protect from overposting attacks, enable the specific properties you want to bind to.
-//        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> Edit(string id, [Bind("Id,NomeUsuario,NomeCompleto,Senha")] Usuario usuario)
-//        {
-//            if (id != usuario.Id)
-//            {
-//                return NotFound();
-//            }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(usuario);
+        }
 
-//            if (ModelState.IsValid)
-//            {
-//                try
-//                {
-//                    _context.Update(usuario);
-//                    await _context.SaveChangesAsync();
-//                }
-//                catch (DbUpdateConcurrencyException)
-//                {
-//                    if (!UsuarioExists(usuario.Id))
-//                    {
-//                        return NotFound();
-//                    }
-//                    else
-//                    {
-//                        throw;
-//                    }
-//                }
-//                return RedirectToAction(nameof(Index));
-//            }
-//            return View(usuario);
-//        }
+        // GET: Usuarios/Delete/5
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-//        // GET: Usuarios/Delete/5
-//        public async Task<IActionResult> Delete(string id)
-//        {
-//            if (id == null)
-//            {
-//                return NotFound();
-//            }
+            var usuario = await BuscaUsuario.BuscarUsuarioPeloId(id);
 
-//            var usuario = await _context.Usuario
-//                .FirstOrDefaultAsync(m => m.Id == id);
-//            if (usuario == null)
-//            {
-//                return NotFound();
-//            }
+            if (usuario == null)
+            {
+                return NotFound();
+            }
 
-//            return View(usuario);
-//        }
+            return View(usuario);
+        }
 
-//        // POST: Usuarios/Delete/5
-//        [HttpPost, ActionName("Delete")]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> DeleteConfirmed(string id)
-//        {
-//            var usuario = await _context.Usuario.FindAsync(id);
-//            _context.Usuario.Remove(usuario);
-//            await _context.SaveChangesAsync();
-//            return RedirectToAction(nameof(Index));
-//        }
-
-//        private bool UsuarioExists(string id)
-//        {
-//            return _context.Usuario.Any(e => e.Id == id);
-//        }
-//    }
-//}
+        // POST: Usuarios/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var usuario = await BuscaUsuario.BuscarUsuarioPeloId(id);
+            BuscaUsuario.RemoverUsuario(id);
+            return RedirectToAction(nameof(Index));
+        }
+    }
+}
