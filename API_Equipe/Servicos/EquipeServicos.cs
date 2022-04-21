@@ -27,6 +27,9 @@ namespace API_Equipe.Servicos
         public Equipe GetId(string id) =>
            _equipe.Find(equipe => equipe.Id == id).FirstOrDefault();
 
+        public Equipe GetCodigo(string codigo) =>
+           _equipe.Find(equipe => equipe.Codigo.ToUpper() == codigo.ToUpper()).FirstOrDefault();
+
         public Models.Equipe ChecarEquipe(string codigo) =>
             _equipe.Find(equipe => equipe.Codigo.ToUpper() == codigo.ToUpper()).FirstOrDefault();
 
