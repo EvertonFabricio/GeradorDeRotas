@@ -5,3 +5,8 @@ MVC criado. Alterado a Home para uma melhor interação com usuario. Interagindo
 Esboço da leitura do excel criado com a biblioteca EPPlus e funcionando parcialmente. 
 Até o momento isso é tudo o que está feito. 
 ----------------------------------------------
+
+Atualização 21/04/2022 - 15:50.
+Atualizei o console app que faz a leitura do arquivo xml. Funcionando corretamente. Importa xml, ordena por cep, exporta em txt o documento todo de forma ordenada (txt apenas para teste e confirmação de que está funcionando). 
+Comecei a implementar a exportação pra docx, template feitoe exportando corretamente, mas ainda não pega os dados da planilha importada para preencher os dados. Será o proximo passo de hj!
+----------------------------------------------
