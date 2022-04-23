@@ -17,7 +17,12 @@ MVC para criação das equipes funcionando parcialmente. Mostra as equipes no in
 
 Atualização 22/04/2022 - 22:25.
 Finalizei quase todo o MVC. Edição de equipe que estava com erro foi corrigido. Fiz perfumeria para adicionar e editar equipes, colocando o dropdown de cidade e o checkbox de pessoa em ordem alfabetica. Travei a alteração do nome da equipe, só é possivel alterar as pessoas e a cidade de atuação. Todos os cadastros pela api ja estavam verificando se ja existe o nome cadastrado, agora todas os cadastros do MVC tbm estão verificando. Pra finalizar o MVC falta apenas verificar se uma pessoa já está em alguma equipe antes de adicionar. Por hora todas as pessoas podem ser adicionadas em todas as equipes. 
+-----------------------------------------------
 
+Atualização 23/04/2022 - 18:50
+Finalizei a verificação da pessoa estar cadastrada em alguma equipe antes de cadastrar ela na proxima. Está funcionando corretamente, agora a pessoa só pode ser cadastrada numa unica equipe. Ao cadastrar uma equipe aparece somente as pessoas que estão disponiveis. Ao editar uma equipe é permitido selecionar tanto quem está disponivel como quem ja faz parte da equipe. Ao salvar as alterações, as pessoas que não foram mais selecionadas praquela equipe tambem voltam a ficar disponivel. Ao excluir uma equipe, todas as pessoas que estavam nela voltam a ficar disponivel.
+Fim de toda a parte de cadastro do MVC (eu acho).
+----------------------------------------------
 
 
 
@@ -26,4 +31,5 @@ Finalizei quase todo o MVC. Edição de equipe que estava com erro foi corrigido
 
 
 ----------------------------------------------
-Falta Fazer: verificar se a pessoa ja está em uma equipe antes de adicionar na outra, importação do excel pelo MVC (por enquanto está funcionando chumbado no consoleApp), Selecionar apenas os campos que deseja do Excel, Filtrar pela cidade (ordenação já ta feita), Preencher o word (layout ja ta pronto), e por ultimo o login do usuario.
+Falta Fazer:
+importação do excel pelo MVC (por enquanto está funcionando chumbado no consoleApp), Selecionar apenas os campos que deseja do Excel, Filtrar pela cidade (ordenação já ta feita), Preencher o word (layout ja ta pronto), e por ultimo o login do usuario.
