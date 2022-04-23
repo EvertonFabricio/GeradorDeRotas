@@ -21,12 +21,14 @@ namespace Servicos
                 string corpoResposta = await respostaAPI.Content.ReadAsStringAsync();
                 var pessoa = JsonConvert.DeserializeObject<Pessoa>(corpoResposta);
 
-                return pessoa;
+               
+                    return pessoa;
+                
 
             }
             catch (HttpRequestException)
             {
-                throw;
+                return null;
             }
         }
 

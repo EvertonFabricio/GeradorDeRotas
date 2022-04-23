@@ -16,9 +16,27 @@ namespace MVC.Controllers
             return View(await BuscaEquipe.BuscarTodasEquipes());
         }
 
+
+
+
+        #region Criar nova equipe
         // GET: Equipes/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            //buscando todas as cidades e ordenando
+            var retornoCidade = await BuscaCidade.BuscarTodasCidades();
+            List<Cidade> cidade = new List<Cidade>();
+            cidade.AddRange(retornoCidade);
+            var ordenarCidade = from c in cidade orderby c.Nome select new { c.Nome, c.Id };
+            ViewBag.Cidade = ordenarCidade;
+
+            //buscando todas as pessoas e ordenando
+            var retornoPessoa = await BuscaPessoa.BuscarTodasPessoas();
+            List<Pessoa> pessoa = new List<Pessoa>();
+            pessoa.AddRange(retornoPessoa);
+            List<Pessoa> ordenarPessoa = pessoa.OrderBy(p => p.Nome).ToList();
+            ViewBag.Pessoa = ordenarPessoa;
+
             return View();
         }
 
@@ -29,8 +47,8 @@ namespace MVC.Controllers
 
             List<Pessoa> listaPessoa = new List<Pessoa>();
 
-            var cidade = Request.Form["Cidade"].FirstOrDefault(); //recupero o nome da cidade que foi selecionada no dropdown e salco na variavel
-            var buscaCidade = await BuscaCidade.BuscarCidadePeloNome(cidade); //busco a cidade selecionada na API de cidade e retorno todas as informações
+            var cidade = Request.Form["Cidade"].ToString(); //recupero o ID da cidade que foi selecionada no dropdown e salvo na variavel
+            var buscaCidade = await BuscaCidade.BuscarCidadePeloId(cidade); //busco a cidade selecionada na API de cidade e retorno todas as informações
             var pessoa = Request.Form["VerificaPessoaEquipe"].ToList();//recupero os id das pessoas que foram selecionadas nas checkbox
 
             foreach (var item in pessoa)
@@ -41,30 +59,48 @@ namespace MVC.Controllers
             if (ModelState.IsValid)
             {
 
-                equipe.Pessoa = listaPessoa;
-                equipe.Cidade = buscaCidade;
-                BuscaEquipe.CadastrarEquipe(equipe);
+                var result = await BuscaEquipe.BuscarEquipePeloCodigo(equipe.Codigo);
+
+                if (result == null)
+                {
+                    equipe.Pessoa = listaPessoa;
+                    equipe.Cidade = buscaCidade;
+                    BuscaEquipe.CadastrarEquipe(equipe);
+                }
+                else
+                {
+                    return Conflict("Codigo da equipe ja cadastrada");
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(equipe);
         }
+        #endregion
 
+
+        #region Editar equipe
         // GET: Equipes/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
+
             if (id == null)
             {
                 return NotFound();
             }
             var equipe = await BuscaEquipe.BuscarEquipePeloId(id);
 
-            //List<Pessoa> lista = new List<Pessoa>();
-            //for (int i = 0; i < equipe.Pessoa.Count; i++)
-            //{
-            //    lista.Add(equipe.Pessoa[i]);
-            //}
+            var result = await BuscaCidade.BuscarTodasCidades();
+            List<Cidade> cidade = new List<Cidade>();
+            cidade.AddRange(result);
+            var ordenarCidade = from c in cidade orderby c.Nome select new { c.Nome, c.Id };
+            ViewBag.Cidade = ordenarCidade;
 
-            //ViewBag.Pessoa = lista;
+            var retornoPessoa = await BuscaPessoa.BuscarTodasPessoas();
+            List<Pessoa> pessoa = new List<Pessoa>();
+            pessoa.AddRange(retornoPessoa);
+            List<Pessoa> ordenarPessoa = pessoa.OrderBy(p => p.Nome).ToList();
+            ViewBag.Pessoa = ordenarPessoa;
 
 
             if (equipe == null)
@@ -74,11 +110,9 @@ namespace MVC.Controllers
             return View(equipe);
         }
 
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Codigo,Pessoa,Cidade")] Equipe equipe)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Codigo,Cidade")] Equipe equipe)
         {
             if (id != equipe.Id)
             {
@@ -87,22 +121,42 @@ namespace MVC.Controllers
 
             if (ModelState.IsValid)
             {
-                var pessoaAdd = Request.Form["adicionarPessoa"].ToList();
 
-                if (pessoaAdd.Count > 0)
+                List<Pessoa> listaPessoa = new List<Pessoa>();
+
+                var result = await BuscaEquipe.BuscarEquipePeloCodigo(equipe.Codigo);
+                var cidadeUp = Request.Form["Cidade"].ToString();
+                var buscaCidade = await BuscaCidade.BuscarCidadePeloId(cidadeUp);
+                var pessoaUp = Request.Form["AtualizarPessoa"].ToList();
+
+                if (result == null) //verifico se o codigo da equipe ja está cadastrado
                 {
-                    for (int i = 0; i < pessoaAdd.Count; i++)
+                    if (pessoaUp.Count > 0)
                     {
-                        var buscarPessoa = await BuscaPessoa.BuscarPessoaPeloNome(pessoaAdd[i]);
-                        equipe.Pessoa.Add(buscarPessoa);
+                        for (int i = 0; i < pessoaUp.Count; i++)
+                        {
+                            var buscarPessoa = await BuscaPessoa.BuscarPessoaPeloId(pessoaUp[i]);
+                            listaPessoa.Add(buscarPessoa);
+                        }
                     }
+
+                    equipe.Pessoa = listaPessoa;
+                    equipe.Cidade = buscaCidade;
+                    BuscaEquipe.UpdateEquipe(id, equipe);
                 }
-                BuscaEquipe.UpdateEquipe(id, equipe);
+                else
+                {
+                    return Conflict("Codigo da equipe ja cadastrada");
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(equipe);
         }
+        #endregion
 
+
+        #region Deletar equipe
         // GET: Equipes/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
@@ -130,160 +184,26 @@ namespace MVC.Controllers
             BuscaEquipe.RemoverEquipe(id);
             return RedirectToAction(nameof(Index));
         }
+        #endregion
 
 
 
+        #region Detalhes da equipe
+
+        public async Task<IActionResult> Details(string id)
+        {
+            var equipe = await BuscaEquipe.BuscarEquipePeloId(id);
+
+            if (equipe == null)
+            {
+                return NotFound();
+            }
+
+            return View(equipe);
+        }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-        //        private readonly MVCContext _context;
-
-        //        public EquipesController(MVCContext context)
-        //        {
-        //            _context = context;
-        //        }
-
-        //        // GET: Equipes
-        //        public async Task<IActionResult> Index()
-        //        {
-        //            return View(await _context.Equipe.ToListAsync());
-        //        }
-
-        //        // GET: Equipes/Details/5
-        //        public async Task<IActionResult> Details(string id)
-        //        {
-        //            if (id == null)
-        //            {
-        //                return NotFound();
-        //            }
-
-        //            var equipe = await _context.Equipe
-        //                .FirstOrDefaultAsync(m => m.Id == id);
-        //            if (equipe == null)
-        //            {
-        //                return NotFound();
-        //            }
-
-        //            return View(equipe);
-        //        }
-
-        //        // GET: Equipes/Create
-        //        public IActionResult Create()
-        //        {
-        //            return View();
-        //        }
-
-        //        // POST: Equipes/Create
-        //        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        //        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //        [HttpPost]
-        //        [ValidateAntiForgeryToken]
-        //        public async Task<IActionResult> Create([Bind("Id,Codigo")] Equipe equipe)
-        //        {
-        //            if (ModelState.IsValid)
-        //            {
-        //                _context.Add(equipe);
-        //                await _context.SaveChangesAsync();
-        //                return RedirectToAction(nameof(Index));
-        //            }
-        //            return View(equipe);
-        //        }
-
-        //        // GET: Equipes/Edit/5
-        //        public async Task<IActionResult> Edit(string id)
-        //        {
-        //            if (id == null)
-        //            {
-        //                return NotFound();
-        //            }
-
-        //            var equipe = await _context.Equipe.FindAsync(id);
-        //            if (equipe == null)
-        //            {
-        //                return NotFound();
-        //            }
-        //            return View(equipe);
-        //        }
-
-        //        // POST: Equipes/Edit/5
-        //        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        //        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //        [HttpPost]
-        //        [ValidateAntiForgeryToken]
-        //        public async Task<IActionResult> Edit(string id, [Bind("Id,Codigo")] Equipe equipe)
-        //        {
-        //            if (id != equipe.Id)
-        //            {
-        //                return NotFound();
-        //            }
-
-        //            if (ModelState.IsValid)
-        //            {
-        //                try
-        //                {
-        //                    _context.Update(equipe);
-        //                    await _context.SaveChangesAsync();
-        //                }
-        //                catch (DbUpdateConcurrencyException)
-        //                {
-        //                    if (!EquipeExists(equipe.Id))
-        //                    {
-        //                        return NotFound();
-        //                    }
-        //                    else
-        //                    {
-        //                        throw;
-        //                    }
-        //                }
-        //                return RedirectToAction(nameof(Index));
-        //            }
-        //            return View(equipe);
-        //        }
-
-        //        // GET: Equipes/Delete/5
-        //        public async Task<IActionResult> Delete(string id)
-        //        {
-        //            if (id == null)
-        //            {
-        //                return NotFound();
-        //            }
-
-        //            var equipe = await _context.Equipe
-        //                .FirstOrDefaultAsync(m => m.Id == id);
-        //            if (equipe == null)
-        //            {
-        //                return NotFound();
-        //            }
-
-        //            return View(equipe);
-        //        }
-
-        //        // POST: Equipes/Delete/5
-        //        [HttpPost, ActionName("Delete")]
-        //        [ValidateAntiForgeryToken]
-        //        public async Task<IActionResult> DeleteConfirmed(string id)
-        //        {
-        //            var equipe = await _context.Equipe.FindAsync(id);
-        //            _context.Equipe.Remove(equipe);
-        //            await _context.SaveChangesAsync();
-        //            return RedirectToAction(nameof(Index));
-        //        }
-
-        //        private bool EquipeExists(string id)
-        //        {
-        //            return _context.Equipe.Any(e => e.Id == id);
-        //        }
+        #endregion
     }
 }

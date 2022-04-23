@@ -14,6 +14,7 @@ namespace MVC.Controllers
             return View(await BuscaCidade.BuscarTodasCidades());
         }
 
+        #region cadastrar cidade
         // GET: Cidades/Create
         public IActionResult Create()
         {
@@ -22,16 +23,29 @@ namespace MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,Nome")] Cidade cidade)
+        public async Task<IActionResult> Create([Bind("Id,Nome")] Cidade cidade)
         {
             if (ModelState.IsValid)
             {
-                BuscaCidade.CadastrarCidade(cidade);
+                var result = await BuscaCidade.BuscarCidadePeloNome(cidade.Nome);
+
+                if (result == null)
+                {
+                    BuscaCidade.CadastrarCidade(cidade);
+                }
+                else
+                {
+                    return Conflict("Cidade ja cadastrada");
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(cidade);
         }
+        #endregion
 
+
+        #region editar cidade
         // GET: Cidades/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
@@ -48,9 +62,6 @@ namespace MVC.Controllers
             return View(cidade);
         }
 
-
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("Id,Nome")] Cidade cidade)
@@ -64,8 +75,16 @@ namespace MVC.Controllers
             {
                 try
                 {
-                    var retornoCidade = await BuscaCidade.BuscarCidadePeloId(id);
-                    BuscaCidade.UpdateCidade(id, cidade);
+                    var result = await BuscaCidade.BuscarCidadePeloNome(cidade.Nome);
+
+                    if (result == null)
+                    {
+                        BuscaCidade.UpdateCidade(id, cidade);
+                    }
+                    else
+                    {
+                        return Conflict("Cidade ja cadastrada");
+                    }
 
                 }
                 catch (DbUpdateConcurrencyException)
@@ -77,7 +96,10 @@ namespace MVC.Controllers
             }
             return View(cidade);
         }
+        #endregion
 
+
+        #region deletar cidade
         // GET: Cidades/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
@@ -105,5 +127,6 @@ namespace MVC.Controllers
             BuscaCidade.RemoverCidade(id);
             return RedirectToAction(nameof(Index));
         }
+        #endregion
     }
 }
