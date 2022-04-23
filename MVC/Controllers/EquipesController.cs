@@ -30,10 +30,19 @@ namespace MVC.Controllers
             var ordenarCidade = from c in cidade orderby c.Nome select new { c.Nome, c.Id };
             ViewBag.Cidade = ordenarCidade;
 
-            //buscando todas as pessoas e ordenando
+
+            //buscando todas as pessoas, selecionando apenas as disponiveis, e ordenando elas
             var retornoPessoa = await BuscaPessoa.BuscarTodasPessoas();
             List<Pessoa> pessoa = new List<Pessoa>();
-            pessoa.AddRange(retornoPessoa);
+
+            for (int i = 0; i < retornoPessoa.Count; i++)
+            {
+                if (retornoPessoa[i].Disponivel == true)
+                    pessoa.Add(retornoPessoa[i]);
+            }
+
+
+            //pessoa.AddRange(retornoPessoa);
             List<Pessoa> ordenarPessoa = pessoa.OrderBy(p => p.Nome).ToList();
             ViewBag.Pessoa = ordenarPessoa;
 
@@ -51,20 +60,31 @@ namespace MVC.Controllers
             var buscaCidade = await BuscaCidade.BuscarCidadePeloId(cidade); //busco a cidade selecionada na API de cidade e retorno todas as informações
             var pessoa = Request.Form["VerificaPessoaEquipe"].ToList();//recupero os id das pessoas que foram selecionadas nas checkbox
 
-            foreach (var item in pessoa)
-            {
-                listaPessoa.Add(await BuscaPessoa.BuscarPessoaPeloId(item));
-            }
+
+
+
+            //foreach (var item in pessoa)
+            //    listaPessoa.Add(await BuscaPessoa.BuscarPessoaPeloId(item));
 
             if (ModelState.IsValid)
             {
+                for (int i = 0; i < pessoa.Count; i++)
+                {
+                    listaPessoa.Add(await BuscaPessoa.BuscarPessoaPeloId(pessoa[i]));
+                    listaPessoa[i].Disponivel = false;
+                    BuscaPessoa.UpdatePessoa(pessoa[i], listaPessoa[i]);
+                }
 
-                var result = await BuscaEquipe.BuscarEquipePeloCodigo(equipe.Codigo);
+                var result = await BuscaEquipe.BuscarEquipePeloCodigo(equipe.Codigo); //verifica se a equipe está cadastrada.
 
                 if (result == null)
                 {
+                    //for (int i = 0; i < listaPessoa.Count; i++)
+                    //    listaPessoa[i].Disponivel = false;
+
                     equipe.Pessoa = listaPessoa;
                     equipe.Cidade = buscaCidade;
+
                     BuscaEquipe.CadastrarEquipe(equipe);
                 }
                 else
@@ -96,9 +116,30 @@ namespace MVC.Controllers
             var ordenarCidade = from c in cidade orderby c.Nome select new { c.Nome, c.Id };
             ViewBag.Cidade = ordenarCidade;
 
+
+
+
             var retornoPessoa = await BuscaPessoa.BuscarTodasPessoas();
             List<Pessoa> pessoa = new List<Pessoa>();
-            pessoa.AddRange(retornoPessoa);
+
+            for (int i = 0; i < retornoPessoa.Count; i++)
+            {
+                if (retornoPessoa[i].Disponivel == true) //verifico se a pessoa ta disponivel
+                    pessoa.Add(retornoPessoa[i]);
+                else
+                {
+                    for (int j = 0; j < equipe.Pessoa.Count; j++) //se a pessoa não tiver disponivel, eu verifico se ela já pertence a essa equipe
+                    {
+                        if (equipe.Pessoa[j].Id == retornoPessoa[i].Id) //se pertencer a essa equipe, coloco na lista pra exibir pq pode selecionar de novo!
+                        {
+                            pessoa.Add(retornoPessoa[i]);
+                            break;
+                        }
+                    }
+                }
+            }
+
+
             List<Pessoa> ordenarPessoa = pessoa.OrderBy(p => p.Nome).ToList();
             ViewBag.Pessoa = ordenarPessoa;
 
@@ -119,38 +160,46 @@ namespace MVC.Controllers
                 return NotFound();
             }
 
+
             if (ModelState.IsValid)
             {
 
                 List<Pessoa> listaPessoa = new List<Pessoa>();
-
-                var result = await BuscaEquipe.BuscarEquipePeloCodigo(equipe.Codigo);
-                var cidadeUp = Request.Form["Cidade"].ToString();
-                var buscaCidade = await BuscaCidade.BuscarCidadePeloId(cidadeUp);
+                var buscaEquipe = await BuscaEquipe.BuscarEquipePeloId(id);
+                var buscaCidade = await BuscaCidade.BuscarCidadePeloId(Request.Form["Cidade"].ToString());
                 var pessoaUp = Request.Form["AtualizarPessoa"].ToList();
 
-                if (result == null) //verifico se o codigo da equipe ja está cadastrado
+
+
+                for (int i = 0; i < buscaEquipe.Pessoa.Count; i++) //altero disponivel de todas as pessoas que estão nessa equipe pra true
                 {
-                    if (pessoaUp.Count > 0)
+                    buscaEquipe.Pessoa[i].Disponivel = true;
+                    BuscaPessoa.UpdatePessoa(buscaEquipe.Pessoa[i].Id, buscaEquipe.Pessoa[i]);
+                }
+
+
+
+                if (pessoaUp.Count > 0)
+                {
+                    for (int i = 0; i < pessoaUp.Count; i++) //altero o disponivel pra false apenas das pessoas que foram selecionadas atualmente.
                     {
-                        for (int i = 0; i < pessoaUp.Count; i++)
-                        {
-                            var buscarPessoa = await BuscaPessoa.BuscarPessoaPeloId(pessoaUp[i]);
-                            listaPessoa.Add(buscarPessoa);
-                        }
+                        listaPessoa.Add(await BuscaPessoa.BuscarPessoaPeloId(pessoaUp[i]));
+                        listaPessoa[i].Disponivel = false;
+                        BuscaPessoa.UpdatePessoa(pessoaUp[i], listaPessoa[i]);
                     }
 
+                    //atribuo todos os novos valores pra equipe e dou update nela
+                    equipe.Codigo = buscaEquipe.Codigo;
                     equipe.Pessoa = listaPessoa;
                     equipe.Cidade = buscaCidade;
                     BuscaEquipe.UpdateEquipe(id, equipe);
                 }
                 else
-                {
-                    return Conflict("Codigo da equipe ja cadastrada");
-                }
+                    return Conflict("Volte e selecione pelo menos 1 pessoa");
 
                 return RedirectToAction(nameof(Index));
             }
+           
             return View(equipe);
         }
         #endregion
@@ -181,6 +230,11 @@ namespace MVC.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var equipe = await BuscaEquipe.BuscarEquipePeloId(id);
+            for (int i = 0; i < equipe.Pessoa.Count; i++)
+            {
+                equipe.Pessoa[i].Disponivel = true;
+                BuscaPessoa.UpdatePessoa(equipe.Pessoa[i].Id, equipe.Pessoa[i]);
+            }
             BuscaEquipe.RemoverEquipe(id);
             return RedirectToAction(nameof(Index));
         }

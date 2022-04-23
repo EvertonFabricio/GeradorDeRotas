@@ -46,7 +46,7 @@
 			</div>
 			@*Aqui cria as checkbox pra selecionar as pessoas da equipe, e pega o Id delas pra fazer o create*@
 			<div class="form-group">
-				<label asp-for="Pessoa" class="control-label">Pessoas Cadastradas:</label><br />
+				<label asp-for="Pessoa" class="control-label">Pessoas Disponíveis:</label><br />
 				@foreach (Pessoa pessoa in ViewBag.Pessoa)
 				{
 					<input name="VerificaPessoaEquipe" type="checkbox" value=@pessoa.Id>

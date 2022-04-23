@@ -81,5 +81,6 @@ namespace Servicos
         {
             client.DeleteAsync("https://localhost:44356/api/Pessoas/" + id);
         }
+
     }
 }
