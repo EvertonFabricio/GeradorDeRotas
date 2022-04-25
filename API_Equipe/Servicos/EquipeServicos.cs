@@ -18,21 +18,28 @@ namespace API_Equipe.Servicos
             _equipe = database.GetCollection<Equipe>(settings.EquipeCollectionName);
         }
 
+        //buscar todas as equipes
         public List<Equipe> Get() =>
             _equipe.Find(equipe => true).ToList();
-
-        public Equipe Get(string codigo) =>
-            _equipe.Find(equipe => equipe.Codigo.ToUpper() == codigo.ToUpper()).FirstOrDefault();
-
+               
+        //buscar equipe pelo id
         public Equipe GetId(string id) =>
            _equipe.Find(equipe => equipe.Id == id).FirstOrDefault();
 
+        //buscar equipe pelo codigo
         public Equipe GetCodigo(string codigo) =>
            _equipe.Find(equipe => equipe.Codigo.ToUpper() == codigo.ToUpper()).FirstOrDefault();
 
+       
+        //buscar equipe pelo id da cidade
+        public List<Equipe> GetCidadeId(string id) =>
+          _equipe.Find(equipe => equipe.Cidade.Id == id).ToList();
+
+        //checar se a equipe existe
         public Models.Equipe ChecarEquipe(string codigo) =>
             _equipe.Find(equipe => equipe.Codigo.ToUpper() == codigo.ToUpper()).FirstOrDefault();
 
+         //criar equipe
         public async Task<Equipe> CreateAsync(Equipe equipe)
         {
 
@@ -56,6 +63,7 @@ namespace API_Equipe.Servicos
             return equipe;
         }
 
+        //atualizar equipe
         public async Task<Equipe> Update(string id, Equipe upEquipe)
         {
             upEquipe.Id = id;
@@ -95,6 +103,7 @@ namespace API_Equipe.Servicos
             return upEquipe;
         }
 
+        //remover equipe
         public void Remove(string id) =>
             _equipe.DeleteOne(equipe => equipe.Id == id);
 

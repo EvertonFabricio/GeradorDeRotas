@@ -24,7 +24,9 @@ Finalizei a verificação da pessoa estar cadastrada em alguma equipe antes de c
 Fim de toda a parte de cadastro do MVC (eu acho).
 ----------------------------------------------
 
-
+Atualização 24/04/2022 - 23:45
+Criado o controller e a view pra tratar o documento e gerar a rota. Importação do excel feito pelo MVC, direto na controller de documentos, portanto será deletado o consoleapp e o serviço que fazia isso. Filtro pelo serviço funcionando. Filtro pela cidade pra saber qual equipe está disponivel para atuar naquela cidade tbm está funcionando. Seleção dinamica dos campos da planilha base pra gerar o documento final tbm está ok. 
+-----------------------------------------------
 
 
 
@@ -32,4 +34,4 @@ Fim de toda a parte de cadastro do MVC (eu acho).
 
 ----------------------------------------------
 Falta Fazer:
-importação do excel pelo MVC (por enquanto está funcionando chumbado no consoleApp), Selecionar apenas os campos que deseja do Excel, Filtrar pela cidade (ordenação já ta feita), Preencher o word (layout ja ta pronto), e por ultimo o login do usuario.
+Preencher o word (layout ja ta pronto) e exportar o arquivo. Por ultimo o login do usuario.

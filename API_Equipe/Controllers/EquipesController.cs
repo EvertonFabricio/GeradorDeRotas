@@ -49,6 +49,20 @@ namespace API_Equipe.Controllers
             return equipe;
         }
 
+        
+        [HttpGet("Cidade")]
+        public ActionResult<List<Equipe>> GetCidadeId(string id)
+        {
+            var equipe = _equipeServicos.GetCidadeId(id);
+
+            if (equipe == null)
+            {
+                return NotFound();
+            }
+
+            return equipe;
+        }
+
 
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> PutEquipeAsync(string id, Equipe upEquipe)

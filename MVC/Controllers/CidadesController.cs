@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Models;
 using Servicos;
 
@@ -73,8 +72,7 @@ namespace MVC.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
+               
                     var result = await BuscaCidade.BuscarCidadePeloNome(cidade.Nome);
 
                     if (result == null)
@@ -86,12 +84,6 @@ namespace MVC.Controllers
                         return Conflict("Cidade ja cadastrada");
                     }
 
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    throw;
-
-                }
                 return RedirectToAction(nameof(Index));
             }
             return View(cidade);

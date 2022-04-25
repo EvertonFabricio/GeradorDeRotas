@@ -3,7 +3,7 @@
 @model Models.Equipe
 
 @{
-	ViewData["Title"] = "Edit";
+	ViewData["Title"] = "Editar Equipe";
 }
 
 <h1>Editar</h1>
@@ -15,12 +15,6 @@
 		<form asp-action="Edit">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<input type="hidden" asp-for="Id" />
-
-			@*<div class="form-group">
-				<label asp-for="Codigo" class="control-label"></label>
-				<input asp-for="Codigo" class="form-control" />
-				<span asp-validation-for="Codigo" class="text-danger"></span>
-			</div>*@
 
 			<div class="form-group">
 				</> <label asp-for="Cidade" class="control-label">Selecione a nova cidade</label><br />

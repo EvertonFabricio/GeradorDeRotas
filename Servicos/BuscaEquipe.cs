@@ -30,6 +30,43 @@ namespace Servicos
             }
         }
 
+        public static async Task<List<Equipe>> BuscarEquipePelaCidadeNome(string cidade)
+        {
+            try
+            {
+                HttpResponseMessage respostaAPI = await client.GetAsync("https://localhost:44339/api/Equipes/Cidade?cidade=" + cidade);
+                respostaAPI.EnsureSuccessStatusCode();
+                string corpoResposta = await respostaAPI.Content.ReadAsStringAsync();
+                var equipe = JsonConvert.DeserializeObject<List<Equipe>>(corpoResposta);
+
+                return equipe;
+
+            }
+            catch (HttpRequestException)
+            {
+                return null;
+            }
+        }
+
+        public static async Task<List<Equipe>> BuscarEquipePelaCidadeId(string id)
+        {
+            try
+            {
+                HttpResponseMessage respostaAPI = await client.GetAsync("https://localhost:44339/api/Equipes/Cidade?id=" + id);
+                respostaAPI.EnsureSuccessStatusCode();
+                string corpoResposta = await respostaAPI.Content.ReadAsStringAsync();
+                var equipe = JsonConvert.DeserializeObject<List<Equipe>>(corpoResposta);
+
+                return equipe;
+
+            }
+            catch (HttpRequestException)
+            {
+                return null;
+            }
+        }
+
+
         public static async Task<List<Equipe>> BuscarTodasEquipes()
         {
             try

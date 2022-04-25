@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Models;
 using Servicos;
 
@@ -74,8 +73,7 @@ namespace MVC.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
+               
                     var result = await BuscaPessoa.BuscarPessoaPeloNome(pessoa.Nome);
                     if (result == null)
                     {
@@ -85,12 +83,7 @@ namespace MVC.Controllers
                     {
                         return Conflict("Pessoa ja está cadastrada, tente outro nome.");
                     }
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    throw;
-
-                }
+               
                 return RedirectToAction(nameof(Index));
             }
             return View(pessoa);

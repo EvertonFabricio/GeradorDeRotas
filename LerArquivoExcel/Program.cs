@@ -71,6 +71,12 @@ namespace LerArquivoExcel
 
 
 
+
+                //********************** passando pro outro arquivo, parei aqui. Acho que não vou usar o SB ***************************************
+
+
+
+
                 StringBuilder sbArquivo = new StringBuilder(); //metodo usado pra concatenar varios textos. Como são 40 colunas, fica mais facil fazer assim do que na mão.
 
                 for (int i = 0; i < tabela.Rows.Count; i++) //for pra selecionar a linha que será preenchida, começando da linha 0 (obvio)
@@ -140,3 +146,8 @@ namespace LerArquivoExcel
         }
     }
 }
+
+
+
+
+    
