@@ -101,69 +101,6 @@ namespace Models
             }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            var allColumns = rotas[0];
-
-            var division = rotas.Count / equipesSelecionadas.Count; //divide a quantidade de rotas pela quantidade de times selecionados
-            var restDivision = rotas.Count % equipesSelecionadas.Count; //pega o resto da divisao de cima
-
-            var indexGeneral = 0;
-
-            var filename = $@"C:\Users\Everton Fabricio\Desktop\{nomeDoServico}-{DateTime.Now:dd-MM-yyyy}.docx";
-
-            using (FileStream fileStream = new(filename, FileMode.CreateNew))
-            {
-                await using (StreamWriter sw = new(fileStream, Encoding.UTF8))
-                {
-                    sw.WriteLine($"{nomeDoServico} - {DateTime.Now:dd/MM/yyyy}\n{cidadeSelecionada.Nome}\n\n");
-
-                    foreach (var team in equipesSelecionadas)
-                    {
-                        sw.WriteLine("Equipe: " + team.Codigo + "\nRotas:\n");
-
-                        for (int i = 0; i < division; i++)
-                        {
-                            if (i == 0 && restDivision > 0)
-                                division++;
-
-                            if (i == 0)
-                                restDivision--;
-
-                            foreach (var index in cabecalhoSelecionado)
-                                sw.WriteLine($"{allColumns[int.Parse(index)]}: {rotas[i + indexGeneral][int.Parse(index)]}");
-
-                            if ((i + 1) >= division)
-                                indexGeneral += 1 + i;
-
-                            sw.WriteLine("\n");
-                        }
-
-                        if (restDivision >= 0)
-                            division--;
-
-                        sw.WriteLine("--------------------------------------------------------------");
-                    }
-
-                    sw.Close();
-                }
-
-                fileStream.Close();
-            }
-
         }
 
     }

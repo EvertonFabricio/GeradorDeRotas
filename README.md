@@ -28,10 +28,10 @@ Atualização 24/04/2022 - 23:45
 Criado o controller e a view pra tratar o documento e gerar a rota. Importação do excel feito pelo MVC, direto na controller de documentos, portanto será deletado o consoleapp e o serviço que fazia isso. Filtro pelo serviço funcionando. Filtro pela cidade pra saber qual equipe está disponivel para atuar naquela cidade tbm está funcionando. Seleção dinamica dos campos da planilha base pra gerar o documento final tbm está ok. 
 -----------------------------------------------
 
-
-
+Atualização 25/04/2022 - 12:37 - "Socorro"
+Funcionando o preenchimento do word corretamente, exportando o arquivo de forma automatica na pasta do sistema. Foi pedido hj que fosse criado o botão pra download do arquivo gerado, mas ainda não fiz. Falta criar a View de Create pra ter alguma coisa pra aparecer quando terminar a geração do documento, por enquanto está dando tela de erro.
 
 
 ----------------------------------------------
 Falta Fazer:
-Preencher o word (layout ja ta pronto) e exportar o arquivo. Por ultimo o login do usuario.
+Falta fazer o login do usuario, e agora falta o botão de download que foi pedido hj.
