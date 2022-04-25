@@ -46,6 +46,9 @@ namespace MVC.Controllers
                 for (var coluna = 1; coluna < colunaCount; coluna++)
                 {
                     var aux = planilha.Cells[1, coluna].Value.ToString(); //travo a linha como 1 e faço um for pra pegar os nomes que estão em todas as colunas dessa linha. 
+                    
+
+
                     cabecalhoDoArquivo.Add(aux); //Monto o cabeçalho colocando as informaoes nessa lita.
 
                     if (aux.ToUpper() == "CEP")
@@ -72,8 +75,8 @@ namespace MVC.Controllers
                     {
                         servico.Add(planilha.Cells[linha, colunaDoServico].Value.ToString().ToUpper());
 
-                        var content = planilha.Cells[linha, column].Value?.ToString() ?? "";
-                        conteudoDaLinha.Add(content.ToString());
+                        var conteudo = planilha.Cells[linha, column].Value?.ToString() ?? "";
+                        conteudoDaLinha.Add(conteudo.ToString());
                     }
 
                     rotaServico.Add(conteudoDaLinha);
