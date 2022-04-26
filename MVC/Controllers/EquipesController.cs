@@ -62,29 +62,30 @@ namespace MVC.Controllers
 
 
 
-            //foreach (var item in pessoa)
-            //    listaPessoa.Add(await BuscaPessoa.BuscarPessoaPeloId(item));
-
             if (ModelState.IsValid)
             {
-                for (int i = 0; i < pessoa.Count; i++)
-                {
-                    listaPessoa.Add(await BuscaPessoa.BuscarPessoaPeloId(pessoa[i]));
-                    listaPessoa[i].Disponivel = false;
-                    BuscaPessoa.UpdatePessoa(pessoa[i], listaPessoa[i]);
-                }
-
                 var result = await BuscaEquipe.BuscarEquipePeloCodigo(equipe.Codigo); //verifica se a equipe está cadastrada.
-
+                
                 if (result == null)
                 {
-                    //for (int i = 0; i < listaPessoa.Count; i++)
-                    //    listaPessoa[i].Disponivel = false;
+                    if (pessoa.Count != 0 && buscaCidade != null)
+                    {
+                        for (int i = 0; i < pessoa.Count; i++) //esse for altera o status disponivel da pessoa selecionada pra false.
+                        {
+                            listaPessoa.Add(await BuscaPessoa.BuscarPessoaPeloId(pessoa[i]));
+                            listaPessoa[i].Disponivel = false;
+                            BuscaPessoa.UpdatePessoa(pessoa[i], listaPessoa[i]);
+                        }
 
-                    equipe.Pessoa = listaPessoa;
-                    equipe.Cidade = buscaCidade;
+                        equipe.Pessoa = listaPessoa;
+                        equipe.Cidade = buscaCidade;
 
-                    BuscaEquipe.CadastrarEquipe(equipe);
+                        BuscaEquipe.CadastrarEquipe(equipe);
+                    }
+                    else
+                    {
+                        return Conflict("ERRO >> Para cadastrar uma equipe, deve-se selecionar uma cidade e pelo menos uma pessoa.");
+                    }
                 }
                 else
                 {
@@ -198,7 +199,7 @@ namespace MVC.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-           
+
             return View(equipe);
         }
         #endregion

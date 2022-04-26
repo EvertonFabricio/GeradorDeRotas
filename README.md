@@ -30,8 +30,12 @@ Criado o controller e a view pra tratar o documento e gerar a rota. Importação
 
 Atualização 25/04/2022 - 12:37 - "Socorro"
 Funcionando o preenchimento do word corretamente, exportando o arquivo de forma automatica na pasta do sistema. Foi pedido hj que fosse criado o botão pra download do arquivo gerado, mas ainda não fiz. Falta criar a View de Create pra ter alguma coisa pra aparecer quando terminar a geração do documento, por enquanto está dando tela de erro.
+-----------------------------------------------
+Atualização Final - 25/04/2022 - 21:16
+FluxoFeliz funcionanado da melhor maneira que eu consegui, inclusive o download do arquivo na maquina do usuario que foi pedido hj.
+Falta fazer a parte de login que eu realmente não sei como fazer e não terei tempo de aprender até amanhã antes de apresentar.
 
 
 ----------------------------------------------
 Falta Fazer:
-Falta fazer o login do usuario, e agora falta o botão de download que foi pedido hj.
+Login do usuario.

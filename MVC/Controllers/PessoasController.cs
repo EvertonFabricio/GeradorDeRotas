@@ -32,6 +32,7 @@ namespace MVC.Controllers
 
                 if (result == null)
                 {
+                    pessoa.Disponivel = true;
                     BuscaPessoa.CadastrarPessoa(pessoa);
                 }
                 else

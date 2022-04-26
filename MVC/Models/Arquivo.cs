@@ -1,52 +1,34 @@
-﻿//using System;
-//using MongoDB.Bson.Serialization.Attributes;
+﻿//using System.Collections.Generic;
+//using System.IO;
 
 //namespace MVC.Models
 //{
-//    public class Arquivo
+//    public class Arquivos
 //    {
+//        public int arquivoID { get; set; }
+//        public string arquivoNome { get; set; }
+//        public string arquivoCaminho { get; set; }
 
-//        [BsonId]
-//        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-//        public string Id { get; set; }
-//        public DateTime DataRota { get; set; }
-//        public string StatusRota { get; set; }
-//        public string Auditado { get; set; }
-//        public string CopRevertue { get; set; }
-//        public string LogRota { get; set; }
-//        public string Pdf { get; set; }
-//        public string Foto { get; set; }
-//        public string Contrato { get; set; }
-//        public string Wo { get; set; }
-//        public string OS { get; set; }
-//        public string Assinante { get; set; }
-//        public string Tecnicos { get; set; }
-//        public string Login { get; set; }
-//        public string Matricula { get; set; }
-//        public string Cop { get; set; }
-//        public string UltimoAlterar { get; set; }
-//        public string Local { get; set; }
-//        public string Ponto { get; set; }
-//        public string Cidade { get; set; }
-//        public string Base { get; set; }
-//        public DateTime Horario { get; set; }
-//        public string Segmento { get; set; }
-//        public string Servico { get; set; }
-//        public string TipoServico { get; set; }
-//        public string TipoOS { get; set; }
-//        public string GrupoServico { get; set; }
-//        public string Endereco { get; set; }
-//        public string Numero { get; set; }
-//        public string Complemento { get; set; }
-//        public string Cep { get; set; }
-//        public string Node { get; set; }
-//        public string Bairro { get; set; }
-//        public string Pacote { get; set; }
-//        public string Cod { get; set; }
-//        public string Telefone1 { get; set; }
-//        public string Telefone2 { get; set; }
-//        public string Obs { get; set; }
-//        public string ObsTecnico { get; set; }
-//        public string Equipamento { get; set; }
+//    }
+
+
+
+//    public List<Arquivos> GetArquivos()
+//    {
+//        List<Arquivos> lstArquivos = new List<Arquivos>();
+//        DirectoryInfo dirInfo = new DirectoryInfo(@"C:\Users\Everton Fabricio\Desktop\GeradorDeRotas\MVC\");
+
+//        int i = 0;
+//        foreach (var item in dirInfo.GetFiles())
+//        {
+//            lstArquivos.Add(new Arquivos()
+//            {
+//                arquivoID = i + 1,
+//                arquivoNome = item.Name,
+//                arquivoCaminho = dirInfo.FullName + @"\" + item.Name
+//            });
+//            i = i + 1;
+//        }
+//        return lstArquivos;
 //    }
 //}

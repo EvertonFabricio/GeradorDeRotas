@@ -1,24 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using OfficeOpenXml;
 using Servicos;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 
 namespace MVC.Controllers
 {
     public class DocumentoController : Controller
     {
+        private static IWebHostEnvironment _hostEnvironment;
         public static List<List<string>> rotas = new();
         public static List<string> cabecalho = new();
         public static List<string> servicos = new();
         public static string nomeDoServico;
         public static string cidade;
+        public static string downloadDocumento;
+
+        public DocumentoController(IWebHostEnvironment hostEnvironment)
+        {
+            _hostEnvironment = hostEnvironment;
+        }
 
         public IActionResult Upload()
         {
@@ -43,10 +49,10 @@ namespace MVC.Controllers
                 int colunaDoCep = 0;
                 int colunaDoServico = 0;
 
-                for (var coluna = 1; coluna < colunaCount; coluna++)
+                for (var coluna = 1; coluna <= colunaCount; coluna++)
                 {
                     var aux = planilha.Cells[1, coluna].Value.ToString(); //travo a linha como 1 e faço um for pra pegar os nomes que estão em todas as colunas dessa linha. 
-                    
+
 
 
                     cabecalhoDoArquivo.Add(aux); //Monto o cabeçalho colocando as informaoes nessa lita.
@@ -59,7 +65,7 @@ namespace MVC.Controllers
                 }
 
                 cabecalho = cabecalhoDoArquivo;
-          
+
 
                 planilha.Cells[2, 1, linhaCount, colunaCount] //seleciona o intervalo de celulas que preciso
                         .Sort(colunaDoCep, false); //informo a coluna que quero ordenar (coluna do cep que ja sei qual é). Coloco false pra não fazer ordenação decrescente.
@@ -70,8 +76,9 @@ namespace MVC.Controllers
                 for (var linha = 1; linha < linhaCount; linha++)
                 {
                     List<string> conteudoDaLinha = new();
+                    conteudoDaLinha.Add(" ");
 
-                    for (var column = 1; column < colunaCount; column++)
+                    for (var column = 1; column <= colunaCount; column++)
                     {
                         servico.Add(planilha.Cells[linha, colunaDoServico].Value.ToString().ToUpper());
 
@@ -89,7 +96,7 @@ namespace MVC.Controllers
 
                 return RedirectToAction(nameof(Filtros));
             }
-        
+
             return RedirectToAction(nameof(Upload));
         }
 
@@ -114,12 +121,14 @@ namespace MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
+
             IEnumerable<Equipe> equipe = await BuscaEquipe.BuscarEquipePelaCidadeId(cidade);
 
             ViewBag.Cabecalho = cabecalho;
             ViewBag.Equipes = equipe;
-
             return View();
+
+
         }
 
         public async Task<IActionResult> Create()
@@ -138,12 +147,20 @@ namespace MVC.Controllers
                 equipesSelecionadas.Add(equipe);
             }
 
-            var cidadeSelecionada = await BuscaCidade.BuscarCidadePeloId(cidade);
+            var cidadeSelecionada = await BuscaCidade.BuscarCidadePeloId(cidade);   
 
-            await ExportarDocumento.Write(rotas, cabecalhoSelecionado, equipesSelecionadas, nomeDoServico, cidadeSelecionada);
+            await ExportarDocumento.Write(rotas, cabecalhoSelecionado, equipesSelecionadas, nomeDoServico, cidadeSelecionada, _hostEnvironment.WebRootPath);
+            var nomeDoArquivo = $"Rotas {cidadeSelecionada.Nome}.docx";
+            downloadDocumento = $"{_hostEnvironment.ContentRootPath}//{nomeDoArquivo}";
 
             return View();
         }
 
+        public FileResult Download()
+        {
+            var nomeDoArquivo = downloadDocumento.Split("//").ToList();
+            var arquivoGerado = System.IO.File.ReadAllBytes(downloadDocumento);
+            return File(arquivoGerado, "application/octet-stream", nomeDoArquivo.Last().ToString());
+        }
     }
 }
