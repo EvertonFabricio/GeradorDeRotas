@@ -28,12 +28,18 @@ Atualização 24/04/2022 - 23:45
 Criado o controller e a view pra tratar o documento e gerar a rota. Importação do excel feito pelo MVC, direto na controller de documentos, portanto será deletado o consoleapp e o serviço que fazia isso. Filtro pelo serviço funcionando. Filtro pela cidade pra saber qual equipe está disponivel para atuar naquela cidade tbm está funcionando. Seleção dinamica dos campos da planilha base pra gerar o documento final tbm está ok. 
 -----------------------------------------------
 
-Atualização 25/04/2022 - 12:37 - "Socorro"
+Atualização 25/04/2022 - 12:37
 Funcionando o preenchimento do word corretamente, exportando o arquivo de forma automatica na pasta do sistema. Foi pedido hj que fosse criado o botão pra download do arquivo gerado, mas ainda não fiz. Falta criar a View de Create pra ter alguma coisa pra aparecer quando terminar a geração do documento, por enquanto está dando tela de erro.
 -----------------------------------------------
+
 Atualização Final - 25/04/2022 - 21:16
 FluxoFeliz funcionanado da melhor maneira que eu consegui, inclusive o download do arquivo na maquina do usuario que foi pedido hj.
 Falta fazer a parte de login que eu realmente não sei como fazer e não terei tempo de aprender até amanhã antes de apresentar.
+------------------------------------------------
+Atualização depois da final que não foi final - 26/04/2022 - 16:43.
+Na hora da apresentação foi visto que tava quebrando na hora de gerar a rota para alguns serviços, e tava duplicando as informaçoes para as equipes selecionadas. Foi corrigido o laço que causava esse erro.
+Ainda tem um erro que eu sei que pode ser causado, mas em nenhum teste aconteceu. Vou tentar arrumar depois.
+
 
 
 ----------------------------------------------
